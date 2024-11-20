@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Noticia;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class NoticiaController extends Controller
 {
@@ -26,9 +27,9 @@ class NoticiaController extends Controller
      */
     public function create()
     {
-        $info = User::all();
+        $user = User::all();
 
-        return view('noticia.create', ["info"=>$info]);
+        return view('noticia.create', ["user"=>$user]);
     }
 
     /**
@@ -36,14 +37,27 @@ class NoticiaController extends Controller
      */
     public function store(Request $request)
     {
+        
+        $user = Auth::user();
+
+        // Verifica se o usuário é administrador ou se ele está tentando criar uma notícia para sua empresa
+        if ($user->tipo_usuario_id == 1) {
+            // Administrador pode criar notícias para qualquer empresa
+            $empresaId = $request->empresa_id; // O ID da empresa pode ser passado no request
+        } else {
+            // Cliente só pode criar notícias para a sua própria empresa
+            $empresaId = $user->empresa_id; // A empresa do cliente já está no usuário
+        }
+        
         $noticia = new Noticia();
 
         $noticia->titulo = $request->input('titulo');
         $noticia->conteudo = $request->input('conteudo');
         $noticia->user_id = $request->input('user_id');
+        $noticia->empresa_id = $empresaId;
 
         try {
-            $noticia->save;
+            $noticia->save();
         } catch (\Exception $e) {
             return redirect()->route('noticia.index')->with('toast', ['type' => 'danger', 'message' => 'Erro Inesperado ('.$e->getMessage().")"]);
         }
@@ -85,7 +99,7 @@ class NoticiaController extends Controller
         $noticia->user_id = $request->input('user_id');
 
         try {
-            $noticia->save;
+            $noticia->save();
         } catch (\Exception $e) {
             return redirect()->route('noticia.index')->with('toast', ['type' => 'danger', 'message' => 'Erro Inesperado ('.$e->getMessage().")"]);
         }

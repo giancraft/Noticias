@@ -49,6 +49,19 @@ class User extends Authenticatable
     }
 
     public function tipoUsuarios(){
-        return $this->has('App\Models\TipoUsuario');
+        return $this->belongsTo('App\Models\TipoUsuario');
     }
+
+    public function empresa()
+    {
+        return $this->belongsTo(Empresa::class);
+    }
+
+    public function hasRole($role)
+    {
+        return $this->role == $role; // Ou a lógica de atribuição de papel
+    }
+
+    
+
 }

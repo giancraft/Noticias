@@ -10,8 +10,8 @@
 </div>
 
 <div class="form-group">
-    <label for="usuario_id">Usuário:</label>
-    <select name="usuario_id" id="usuario_id" class="form-control" required>
+    <label for="user_id">Usuário:</label>
+    <select name="user_id" id="user_id" class="form-control" required>
         @foreach ($user as $usuario)
         <option value="{{ $usuario->id }}" 
             @if(isset($info->usuario_id) && $info->usuario_id == $usuario->id) selected @endif>
@@ -21,7 +21,7 @@
     </select>
 </div>
 
-<br>
-<div class="d-flex justify-content-center">
+<div class="d-flex justify-content-center mt-3 gap-3">
+    <a href="{{ route('noticia.index') }}" class="btn btn-secondary">Voltar</a>
     <button type="submit" class="btn btn-dark" name="envia">Enviar</button>
 </div>

@@ -2,27 +2,42 @@
 
 use App\Http\Controllers\NoticiaController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\TipoUsuarioController;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
-
+// Página inicial
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('noticia.index'); // Redireciona para a lista de notícias
 });
 
-Route::resource('/noticia', NoticiaController::class)->parameters([
-    'noticia' => 'noticia',
-]);
+// **Rotas públicas** - Não exigem autenticação
+Route::get('noticia', [NoticiaController::class, 'index'])->name('noticia.index'); // Listagem de notícias
+Route::get('noticia/{noticia}', [NoticiaController::class, 'show'])->name('noticia.show'); // Visualizar notícia específica
 
-Route::resource('/usuario', UserController::class);
-Route::resource('/tipoUsuario', TipoUsuarioController::class);
+// **Rotas de autenticação** - Exigem que o usuário não esteja autenticado
+Route::middleware(['guest'])->group(function () {
+    Route::get('login', [AuthController::class, 'showLoginForm'])->name('login');
+    Route::post('login', [AuthController::class, 'login']);
+    Route::get('register', [AuthController::class, 'showRegisterForm'])->name('register');
+    Route::post('register', [AuthController::class, 'register']);
+});
+
+// **Logout** (apenas usuários autenticados)
+Route::post('logout', [AuthController::class, 'logout'])->name('logout');
+
+// **Rotas protegidas** - Exigem autenticação
+Route::middleware(['auth'])->group(function () {
+
+    // **Rotas de administradores** - Apenas administradores podem acessar
+    Route::middleware(['checkRole:Administrador'])->group(function () {
+        Route::resource('noticia', NoticiaController::class); // Apenas as ações de criação, atualização e edição
+        Route::resource('usuario', UserController::class); // O administrador pode gerenciar usuários
+        Route::resource('tipoUsuario', TipoUsuarioController::class);
+    });
+
+    // **Rotas de clientes** - Apenas clientes podem acessar
+    /*Route::middleware(['checkRole:Cliente'])->group(function () {
+        Route::resource('noticia', NoticiaController::class); // Apenas ações de notícias pessoais
+    });*/
+});

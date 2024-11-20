@@ -1,5 +1,8 @@
 @include('mensagem')
 
+<br>
+<h1 class="mb-0">Tipo Usuário</h1>
+
 @extends('app')
 
     <script>
@@ -14,8 +17,7 @@
 
     <br>
 
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="mb-0">Tipo Usuário</h1>
+    <div class="d-flex justify-content-end align-items-center mb-4 px-4">
         <a href="{{ route('tipoUsuario.create') }}" class="btn btn-success">Novo TipoUsuario</a>
     </div>
 
@@ -35,13 +37,13 @@
                     <a href="{{route('tipoUsuario.show', $item->id)}}"><button class="btn btn-dark">Detalhes</button></a>
                 </td>
                 <td>
-                    <a href="{{route('tipoUsuario.edit', $item->id)}}"><button class="btn btn-dark">Alterar</button></a>
+                    <a href="{{route('tipoUsuario.edit', $item->id)}}"><button class="btn btn-warning">Alterar</button></a>
                 </td>
                 <td>
                     <form name="{{'form_delete_'.$item->id}}" action="{{route('tipoUsuario.destroy', $item->id)}}" method="post" name="delete">
                         @csrf
                         @method('DELETE')
-                        <button type="button" class="btn btn-danger" onclick="confirmDelete('{{'form_delete_'.$item->id}}')">Deletar</button>
+                        <button type="button" class="btn btn-danger" onclick="confirmDelete('{{'form_delete_'. $item->id}}')">Deletar</button>
                     </form>
                 </td>
             </tr>

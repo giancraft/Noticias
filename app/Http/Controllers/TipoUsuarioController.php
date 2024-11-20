@@ -35,16 +35,21 @@ class TipoUsuarioController extends Controller
         $tipoUsuario = new TipoUsuario();
 
         $tipoUsuario->nome = $request->input('nome');
-        
+
         try {
-            $tipoUsuario->save;
+            // Verificar se o nome já existe
+            $exists = TipoUsuario::where('nome', $tipoUsuario->nome)->exists();
+            if ($exists) {
+                throw new \Exception('Já existe um tipo de usuário com o nome "'.$tipoUsuario->nome.'"');
+            }
+
+            $tipoUsuario->save();
         } catch (\Exception $e) {
-            return redirect()->route('tipoUsuario.index')->with('toast', ['type' => 'danger', 'message' => 'Erro Inesperado ('.$e->getMessage().")"]);
+            return redirect()->route('tipoUsuario.index')->with('toast', ['type' => 'danger', 'message' => 'Erro: '.$e->getMessage()]);
         }
 
         return redirect()->route('tipoUsuario.index')->with('toast', ['type' => 'success', 'message' => 'TipoUsuario adicionado com sucesso.']);
     }
-
     /**
      * Display the specified resource.
      */
@@ -73,7 +78,7 @@ class TipoUsuarioController extends Controller
         $tipoUsuario->nome = $request->input('nome');
 
         try {
-            $tipoUsuario->save;
+            $tipoUsuario->save();
         } catch (\Exception $e) {
             return redirect()->route('tipoUsuario.index')->with('toast', ['type' => 'danger', 'message' => 'Erro Inesperado ('.$e->getMessage().")"]);
         }

@@ -14,4 +14,10 @@ class Noticia extends Model
     public function usuario() {
         return $this->belongsTo('App\Models\User');
     }
+
+    public function empresa()
+{
+    return $this->belongsTo(Empresa::class);
+}
+
 }
