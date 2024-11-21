@@ -10,7 +10,7 @@
     @csrf
     @method('PUT')
     <fieldset>
-        @component('usuario.form', ["info"=>$info, "tipoUsuario"=>$tipoUsuario])
+        @component('usuario.form', ["info"=>$info, "tipoUsuario"=>$tipoUsuario, "empresa" => $empresa])
         @endcomponent
     </fieldset>
     </form>

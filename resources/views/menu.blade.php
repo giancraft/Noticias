@@ -44,7 +44,7 @@
                     <a href="{{ route('usuario.show', Auth::user()->id) }}">
                         <img src="https://w7.pngwing.com/pngs/343/677/png-transparent-computer-icons-user-profile-login-my-account-icon-heroes-black-user-thumbnail.png" class="rounded-circle" alt="User Image">
                     </a>
-                    <span class="mx-2">{{ Auth::user()->nome }}</span>
+                    <span class="mx-2">{{ Auth::user()->name }}</span>
                     <form action="{{ route('logout') }}" method="POST" class="mt-2">
                         @csrf
                         <button type="submit" class="btn btn-outline-danger btn-sm">Logout</button>

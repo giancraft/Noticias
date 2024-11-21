@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\TipoUsuario;
+use App\Models\Empresa;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
@@ -26,8 +27,9 @@ class UserController extends Controller
     public function create()
     {
         $tipoUsuario = TipoUsuario::all();
+        $empresa = Empresa::all();
 
-        return view('usuario.create', ["tipoUsuario"=>$tipoUsuario]);
+        return view('usuario.create', ["tipoUsuario"=>$tipoUsuario, "empresa"=>$empresa]);
     }
 
     /**
@@ -41,6 +43,7 @@ class UserController extends Controller
         $usuario->email = $request->input('email');
         $usuario->password = Hash::make($request->input('senha'));
         $usuario->tipo_usuario_id = $request->input('tipo_usuario_id');
+        $usuario->empresa_id = $request->input('empresa_id');
 
         try {
             $usuario->save();
@@ -71,7 +74,9 @@ class UserController extends Controller
 
         $tipoUsuario = TipoUsuario::all();
 
-        return view('usuario.edit', ["info"=>$info, "tipoUsuario"=>$tipoUsuario]);
+        $empresa = Empresa::all();
+
+        return view('usuario.edit', ["info"=>$info, "tipoUsuario"=>$tipoUsuario, "empresa" => $empresa]);
     }
 
     /**
@@ -83,6 +88,7 @@ class UserController extends Controller
         $usuario->email = $request->input('email');
         $usuario->password = Hash::make($request->input('senha'));
         $usuario->tipo_usuario_id = $request->input('tipo_usuario_id');
+        $usuario->empresa_id = $request->input('empresa_id');
 
         try {
             $usuario->save();

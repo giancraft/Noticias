@@ -9,7 +9,7 @@
     <form action="{{ route('usuario.store') }}" method="POST">
     @csrf
     <fieldset>
-        @component('usuario.form', ['tipoUsuario' => $tipoUsuario])
+        @component('usuario.form', ['tipoUsuario' => $tipoUsuario, 'empresa' => $empresa])
         @endcomponent
     </fieldset>
     </form>

@@ -27,14 +27,14 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         $request->validate([
-            'nome' => 'required|string|max:45',
+            'name' => 'required|string|max:45',
             'email' => 'required|string|email|max:45|unique:users',
             'password' => 'required|string|min:4',
             'empresa_id' => 'required|exists:empresas,id', // Valida que a empresa existe
         ]);
     
         $user = User::create([
-            'name' => $request->nome, // Corrige o nome, pois no request o campo é 'nome'
+            'name' => $request->name, // Corrige o nome, pois no request o campo é 'nome'
             'email' => $request->email,
             'password' => Hash::make($request->password), // Use 'password' aqui para corresponder ao campo no modelo
             'tipo_usuario_id' => $request->tipo_usuario_id,

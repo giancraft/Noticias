@@ -43,7 +43,7 @@ class NoticiaController extends Controller
         // Verifica se o usuário é administrador ou se ele está tentando criar uma notícia para sua empresa
         if ($user->tipo_usuario_id == 1) {
             // Administrador pode criar notícias para qualquer empresa
-            $empresaId = $request->empresa_id; // O ID da empresa pode ser passado no request
+            $empresaId = $user->empresa_id; // O ID da empresa pode ser passado no request
         } else {
             // Cliente só pode criar notícias para a sua própria empresa
             $empresaId = $user->empresa_id; // A empresa do cliente já está no usuário

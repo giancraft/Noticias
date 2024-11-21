@@ -6,6 +6,25 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\TipoUsuarioController;
 use Illuminate\Support\Facades\Route;
 
+// **Rotas protegidas** - Exigem autenticação
+Route::middleware(['auth', 'checkAccess'])->group(function () {
+    \Log::info('Dentro das rotas protegidas');
+
+    // **Rotas de notícias protegidas** (somente administradores e clientes podem criar/editar/excluir)
+    
+    // Usando a rota resource para criar, editar e excluir notícias
+    Route::resource('noticia', NoticiaController::class)->except(['index', 'show'])
+    ->parameters([
+        'noticia' => 'noticia'  // Aqui você personaliza o nome do parâmetro se necessário
+    ]);  // Exclui 'index' e 'show' que já são públicas
+    
+    // Rotas de usuários (somente administradores)
+    Route::middleware('admin')->group(function() {
+        Route::resource('usuario', UserController::class);
+        Route::resource('tipoUsuario', TipoUsuarioController::class);
+    });
+});
+
 // Página inicial
 Route::get('/', function () {
     return redirect()->route('noticia.index'); // Redireciona para a lista de notícias
@@ -23,21 +42,7 @@ Route::middleware(['guest'])->group(function () {
     Route::post('register', [AuthController::class, 'register']);
 });
 
-// **Logout** (apenas usuários autenticados)
+// **Logout** - Disponível para usuários autenticados
 Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 
-// **Rotas protegidas** - Exigem autenticação
-Route::middleware(['auth'])->group(function () {
 
-    // **Rotas de administradores** - Apenas administradores podem acessar
-    Route::middleware(['checkRole:Administrador'])->group(function () {
-        Route::resource('noticia', NoticiaController::class); // Apenas as ações de criação, atualização e edição
-        Route::resource('usuario', UserController::class); // O administrador pode gerenciar usuários
-        Route::resource('tipoUsuario', TipoUsuarioController::class);
-    });
-
-    // **Rotas de clientes** - Apenas clientes podem acessar
-    /*Route::middleware(['checkRole:Cliente'])->group(function () {
-        Route::resource('noticia', NoticiaController::class); // Apenas ações de notícias pessoais
-    });*/
-});
