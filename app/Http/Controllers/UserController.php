@@ -61,8 +61,9 @@ class UserController extends Controller
         $esp = $usuario;
 
         $tipoUsuario = TipoUsuario::find($usuario->tipo_usuario_id);
+        $empresa = Empresa::find($usuario->empresa_id);
 
-        return view('usuario.show', ["esp"=>$esp, "tipoUsuario"=>$tipoUsuario]);
+        return view('usuario.show', ["esp"=>$esp, "tipoUsuario"=>$tipoUsuario, "empresa"=>$empresa]);
     }
 
     /**

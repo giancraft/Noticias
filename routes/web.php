@@ -25,6 +25,7 @@ Route::middleware(['auth', 'checkAccess'])->group(function () {
     });
 });
 
+
 // Página inicial
 Route::get('/', function () {
     return redirect()->route('noticia.index'); // Redireciona para a lista de notícias

@@ -14,6 +14,8 @@
     <div class="card-body">
         <p class="card-text">{{ $esp->conteudo }}</p>
         <small class="text-muted">Publicado em: {{ $esp->created_at->format('d/m/Y H:i') }}</small>
+        <br>
+        <small class="text-muted">Por: {{ $user->name }}</small>
         <br><br>
 
         <a href="{{ route('noticia.index') }}" class="btn btn-secondary">Voltar</a>

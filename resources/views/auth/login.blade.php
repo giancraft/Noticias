@@ -42,6 +42,10 @@
                 <div class="d-flex justify-content-center">
                     <a href="{{ url('register') }}">Cadastre-se aqui</a>
                 </div>
+                <br>
+                <div class="auth-buttons">
+                    <a href="{{ route('noticia.index') }}" class="btn btn-outline-primary btn-sm">Acessar Notícias</a>
+                </div>
             </fieldset>
         </form>
     </div>

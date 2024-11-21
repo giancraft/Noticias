@@ -20,7 +20,7 @@ class AuthController extends Controller
     public function showRegisterForm()
     {
         $info = TipoUsuario::all();
-        $empresas = Empresa::all(); // Carrega as empresas para o formulário
+        $empresas = Empresa::all();
         return view('auth.register', ["info" => $info, "empresas" => $empresas]);
     }
 
@@ -30,13 +30,12 @@ class AuthController extends Controller
             'name' => 'required|string|max:45',
             'email' => 'required|string|email|max:45|unique:users',
             'password' => 'required|string|min:4',
-            'empresa_id' => 'required|exists:empresas,id', // Valida que a empresa existe
         ]);
     
         $user = User::create([
-            'name' => $request->name, // Corrige o nome, pois no request o campo é 'nome'
+            'name' => $request->name,
             'email' => $request->email,
-            'password' => Hash::make($request->password), // Use 'password' aqui para corresponder ao campo no modelo
+            'password' => Hash::make($request->password),
             'tipo_usuario_id' => $request->tipo_usuario_id,
             'empresa_id' => $request->empresa_id,
         ]);
@@ -52,7 +51,6 @@ class AuthController extends Controller
         $request->validate([
             'email' => 'required|string|email',
             'password' => 'required|string',
-            'empresa_id' => 'required|exists:empresas,id', // Garante que a empresa existe
         ]);
 
         $credentials = [

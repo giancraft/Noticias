@@ -5,7 +5,7 @@
 
     <div class="card" style="max-width: 600px; margin: 0 auto;">
         <div class="card-header d-flex justify-content-between align-items-center p-2">
-            <h5 class="mb-0">Detalhes do Tipo Usuário: {{ $esp->nome }}</h5>
+            <h5 class="mb-0">Detalhes do Usuário:</h5>
         </div>
         <div class="card-body p-3">
             <dl class="row mb-0">
@@ -17,6 +17,12 @@
 
                 <dt class="col-sm-4">Email:</dt>
                 <dd class="col-sm-8">{{ $esp->email }}</dd>
+
+                <dt class="col-sm-4">Tipo de Usuário:</dt>
+                <dd class="col-sm-8">{{ $tipoUsuario->nome }}</dd>
+
+                <dt class="col-sm-4">Empresa:</dt>
+                <dd class="col-sm-8">{{ $empresa->nome }}</dd>
 
             </dl>
 
